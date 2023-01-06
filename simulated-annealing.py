@@ -4,23 +4,42 @@ import math
 import numpy as np
 import copy
 #parameters
-piece_type = [1,2,3,4,5] #you can add pieces here 
+piece_type = [1,2,3,4,5,6,7,8,9,10,11,12,13,14] #you can add pieces here 
 piece_number = 4
 T = 1000 #initial temp
 coefficient = 0.98
-total_systems = 14
+total_systems = 4
 iteration = 700 #coef 0.97 iteration 500 ceff 0.98 iteration 700 else throws an overflow error
-sub_iteration = 5
-cost_cons = 300 #constraints
-weight_cons = 200
+sub_iteration = 30
+cost_cons = 130 #constraints
+weight_cons = 170
 #piece data
-pieces_data = {1:{'r':0.85,'c':10,'w':12}, #data for each piece
-2:{'r':0.75,'c':5,'w':10},
-3:{'r':0.95,'c':20,'w':18},
-4:{'r':0.90,'c':15,'w':15},
-5:{'r':0.99,'c':25,'w':20}}
+pieces_data = {1:{'r':0.85,'c':18,'w':20}, #data for each piece
+2:{'r':0.90,'c':23,'w':18},
+3:{'r':0.90,'c':20,'w':21},
+4:{'r':0.75,'c':13,'w':13},
+5:{'r':0.80,'c':16,'w':16},
+6:{'r':0.85,'c':17,'w':21},
+7:{'r':0.95,'c':28,'w':23},
+8:{'r':0.95,'c':26,'w':26},
+9:{'r':0.95,'c':33,'w':18},
+10:{'r':0.99,'c':38,'w':28},
+11:{'r':0.99,'c':43,'w':26},
+12:{'r':0.80,'c':18,'w':18},
+13:{'r':0.85,'c':18,'w':19},
+14:{'r':0.90,'c':18,'w':23}
+}
 #var
 sol=[]
+#weibull
+lambda_w = [0.00532, 0.00818, 0.0133, 0.00741, 0.00619, 0.00436, 0.0105, 
+0.015, 0.00268, 0.0141, 0.00394, 0.00236, 0.00215, 0.011]
+k = [2, 3, 3 ,2 ,1 ,3 ,3 ,3 ,2 ,3 ,2 ,1 ,2 ,3]
+c = [1, 2, 2, 3, 2, 3, 4, 3, 2, 4, 3, 2, 2, 4]
+w = [3, 8, 7, 5, 4, 5, 7, 4, 8, 6, 5, 4, 5, 6]
+x = np.arange(1,50.)/25.
+def weib(x,n,a):
+    return (a / n) * (x / n)**(a - 1) * np.exp(-(x / n)**a)
 #new solution creator
 def create(solutionn):
     index = np.random.choice(np.arange(0,total_systems))
